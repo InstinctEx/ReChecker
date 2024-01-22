@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "f/4Qf1zdDMElXVnfycCDdEk5SW4E1OP1Y2hImx0wVA976B00ULCWkEBiJHhFj9A5rmxlsI3qoQMZbXNx64OZmA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Butterfly\\source\\repos\\recheck\\recheck\\recheck.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Butterfly\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

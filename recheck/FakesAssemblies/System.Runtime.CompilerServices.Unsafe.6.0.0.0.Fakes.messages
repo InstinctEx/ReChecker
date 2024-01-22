@@ -1,0 +1,2 @@
+C:\Users\Butterfly\source\repos\recheck\recheck\Fakes\System.Runtime.CompilerServices.Unsafe.fakes : warning : Cannot generate stub for System.Runtime.CompilerServices.Unsafe: Type has no Constructors visible to the assembly. The Constructor itself or a parameter may not be visible..
+C:\Users\Butterfly\source\repos\recheck\recheck\Fakes\System.Runtime.CompilerServices.Unsafe.fakes : warning : Cannot generate shim for System.Runtime.CompilerServices.Unsafe: Type is not supported because of internal limitations.
