@@ -18,3 +18,4 @@ It is up to you to determine if this product meets your requirements.
 # Contribute
 I won't update this all the time, wanna fix it if its broken? <br>
 Find new Bypass Methods!
+This is only for educational purposes
