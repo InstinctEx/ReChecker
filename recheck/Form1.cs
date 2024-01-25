@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Security.Principal;
 namespace recheck
 {
     public partial class Form1 : Form
@@ -10,6 +11,17 @@ namespace recheck
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            static bool IsAdministrator()
+            {
+                return (new WindowsPrincipal(WindowsIdentity.GetCurrent()))
+                          .IsInRole(WindowsBuiltInRole.Administrator);
+            }
+            if (!IsAdministrator())
+            {
+                MessageBox.Show("Please run this program as Administrator!");
+                Close();
+
+            }
 
         }
 
@@ -25,7 +37,7 @@ namespace recheck
         }
 
 
-        // Token: 0x06000029 RID: 41 RVA: 0x000021F8 File Offset: 0x000003F8
+       
         private Process StartProcess(string path)
         {
             Process process = Process.Start(path);
@@ -33,7 +45,7 @@ namespace recheck
             return process;
         }
 
-        // Token: 0x0600002A RID: 42 RVA: 0x00002DF8 File Offset: 0x00000FF8
+      
         private void KillProcesses()
         {
             (from x in Process.GetProcesses()
@@ -43,32 +55,16 @@ namespace recheck
                  x.Kill();
              });
             (from x in Process.GetProcesses()
-             where x.ProcessName.StartsWith("aae_", StringComparison.OrdinalIgnoreCase)
+             where x.ProcessName.StartsWith("rre_", StringComparison.OrdinalIgnoreCase)
              select x).ToList<Process>().ForEach(delegate (Process x)
              {
                  x.Kill();
              });
         }
 
-        // Token: 0x0600002B RID: 43 RVA: 0x00002EAC File Offset: 0x000010AC
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-
-
-            string directoryName = ""; 
-            directoryName = Path.GetDirectoryName(pathBox.Text);
-            if (!orig_files)
-            {
-                if (isChecked)
-                {
-                    DeleteFiles(directoryName);
-                    KillProcesses();
-                    RenameFiles(directoryName);
-                    return;
-                }
-                KillProcesses();
-                RenameFiles(directoryName);
-            }
+          
         }
         public void CreateSymlinks(string path)
         {
@@ -100,13 +96,7 @@ namespace recheck
             {
             }
         }
-        
 
-		// Token: 0x0600000A RID: 10 RVA: 0x000020A5 File Offset: 0x000002A5
-
-		// Token: 0x04000004 RID: 4
-		
-	
         public void wait(int milliseconds)
         {
             System.Windows.Forms.Timer timer1 = new System.Windows.Forms.Timer();
@@ -127,8 +117,6 @@ namespace recheck
                 Application.DoEvents();
             }
         }
-
-        // Token: 0x0600001D RID: 29 RVA: 0x00002AE4 File Offset: 0x00000CE4
         public void RenameFiles(string path)
         {
             if (orig_files)
@@ -146,50 +134,21 @@ namespace recheck
                     return;
                 }
             }
-            try
+            else
             {
-                File.Move(path + newUI, path + origUI);
-                File.Move(path + newEng, path + origEng);
-                File.Move(path + newServ, path + origServ);
-                orig_files = true;
-            }
-            catch (Exception ex2)
-            {
-                MessageBox.Show(ex2.Message);
+                try
+                {
+                    File.Move(path + newUI, path + origUI);
+                    File.Move(path + newEng, path + origEng);
+                    File.Move(path + newServ, path + origServ);
+                    orig_files = true;
+                }
+                catch (Exception ex2)
+                {
+                    MessageBox.Show(ex2.Message);
+                }
             }
         }
-
-        private string origUI = "/reWASD.exe";
-       
-        // Token: 0x0400000D RID: 13
-        private string newUI = "/aae_ui.exe";
-
-        // Token: 0x0400000E RID: 14
-        private string origEng = "/reWASDEngine.exe";
-
-        // Token: 0x0400000F RID: 15
-        private string newEng = "/aae_eng.exe";
-
-        // Token: 0x04000010 RID: 16
-        private string origServ = "/reWASDService.exe";
-
-        // Token: 0x04000011 RID: 17
-        private string newServ = "/aae_serv.exe";
-
-        // Token: 0x04000012 RID: 18
-        private Process reWASD;
-
-        // Token: 0x04000013 RID: 19
-        private bool orig_files = true;
-
-        // Token: 0x04000014 RID: 20
-        private bool isChecked;
-
-        // Token: 0x04000015 RID: 21
-        public const int WM_NCLBUTTONDOWN = 161;
-
-        // Token: 0x04000016 RID: 22
-        public const int HT_CAPTION = 2;
 
         private void runrbtn_Click(object sender, EventArgs e)
         {
@@ -197,7 +156,7 @@ namespace recheck
             string directoryName = Path.GetDirectoryName(text);
             if (!orig_files)
             {
-                MessageBox.Show("AA Enabler is already running, please restart the application");
+                MessageBox.Show("Rechecker is already running, please restart the application");
                 return;
             }
             if (!text.Contains("reWASD.exe"))
@@ -220,6 +179,56 @@ namespace recheck
             CreateSymlinks(directoryName);
             wait(2000);
         }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            string directoryName = Path.GetDirectoryName(pathBox.Text);
+            if (!orig_files)
+            {
+                if (isChecked)
+                {
+                    DeleteFiles(directoryName);
+                    KillProcesses();
+                    RenameFiles(directoryName);
+                    return;
+                }
+                KillProcesses();
+                RenameFiles(directoryName);
+                MessageBox.Show("Cleaning Temp Data.");
+            }
+        }
+
+        private static Random random = new Random();
+
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+        private string origUI = "/reWASD.exe";
+
+        private string newUI = "/rre_" + RandomString(15) + ".exe";
+
+        private string origEng = "/reWASDEngine.exe";
+
+        private string newEng = "/rre_" + RandomString(15) + ".exe";
+
+        private string origServ = "/reWASDService.exe";
+
+        private string newServ = "/rre_" + RandomString(15) + ".exe";
+
+        private Process reWASD;
+
+        private bool orig_files = true;
+
+        private bool isChecked;
+
+        public const int WM_NCLBUTTONDOWN = 161;
+
+        public const int HT_CAPTION = 2;
+
+      
     }
 
 }
