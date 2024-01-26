@@ -3,10 +3,9 @@ A reWASD Aim Assist bypass for The Finals, Fortnite, etc.<br>
 Hides reWASD enabling Aim Assist on Mouse & Keyboard for free. <br>
 <br>Why pay overpriced software while this works, it's open-source and it's free?
 
-# Are you an aim assist enjoyer? 
-Well, you've come to the right place!
-
-With Rechecker you'll be back to beaming in no time.
+# How to Use :
+- Launch Game
+- Launch Rechecker
 # Why Rechecker :
 - Lightweight
 - Confirmed to work with The Finals, Fortnite, among other FPS titles
